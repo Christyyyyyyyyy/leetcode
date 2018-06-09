@@ -24,7 +24,7 @@ Just like arrays, vectors use **contiguous storage locations** for their element
   ### 使用方法
 ```
   #include<iostream>
-  #include <vector>
+  #include<vector>
 
   using namespace std;
 
@@ -42,4 +42,63 @@ Just like arrays, vectors use **contiguous storage locations** for their element
 >> 2
 
 ### 基本操作
-1. 头文件：
+1. 头文件：  
+```
+#include<vector>
+```
+2. 创造vector对象：  
+```
+vector<int>test;
+```
+3. 尾部插入数字：
+```
+test.push_back(a);
+```
+4. 使用下标访问元素：（记住从下标是从0开始的）
+```
+cout << test[0] << endl;
+```
+5. 使用迭代器访问元素：
+```
+    vector<int>::iterator k;
+    for(k = test.begin(); k != test.end(); k++)
+        cout << *k << endl;
+```
+>> 输出：  
+
+>> 1  
+>> 2  
+>> 3  
+>>> 所以k本质上是一个指针。  
+要注意，迭代器<>里的数据类型不是一直是int的！应该根据与vector的数据类型一致：  
+```
+int main(){
+    vector<char> test; //建立一个vector，int为元素数组的数据类型，test为动态数组名
+    test.push_back('a');
+    test.push_back('b');//把1和2压入vector，因此，test[0]是1， test[1]是2
+    test.push_back('c');
+    vector<char>::iterator k;
+    for(k = test.begin(); k != test.end(); k++)
+        cout << *k << endl;
+    return 0;
+ }
+```
+>> 输出：  
+
+>> a  
+>> b  
+>> c 
+6. 向量大小：
+```
+test.size();
+```
+7. 任意位置插入元素：
+```
+test.insert(test.begin() + i, a);  //在第i+1个元素前插入a；
+```
+8. 删除任意位置元素：
+```
+test.erase(test.begin()+2);  ／
+```／
+```
+```
