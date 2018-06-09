@@ -11,12 +11,35 @@ Just like arrays, vectors use **contiguous storage locations** for their element
   ### Container properties
   1. Sequence  
   Elements in sequence containers are ordered in a strict linear sequence. Individual elements are accessed by their position in this sequence.  
-  > 元素在sequence container里是线性排序的。
-  > 像数组一样，元素可通过其在序列里的顺序被访问到。
+  >> 元素在sequence container里是线性排序的。
+  >> 像数组一样，元素可通过其在序列里的顺序被访问到。
   2. Dynamic array  
   Allows direct access to any element in the sequence, even through pointer arithmetics, and provides relatively fast addition/removal of elements at the end of the sequence.  
-  > 在end of the sequence，提供了增删操作。
-  > 且尽管是动态的数组，元素的访问也可以通过pointer arithmetics。
+  >> 在end of the sequence，提供了增删操作。
+  >> 且尽管是动态的数组，元素的访问也可以通过pointer arithmetics。
   3. Allocator-aware  
   The container uses an allocator object to dynamically handle its storage needs.  
-  > 容器使用分配器对象（allocator object）来动态处理其储存需求。
+  >> 容器使用分配器对象（allocator object）来动态处理其储存需求。
+  
+  ### 使用方法
+```
+  #include<iostream>
+  #include <vector>
+
+  using namespace std;
+
+  int main(){
+      vector<int> test;   //建立一个vector，int为元素数组的数据类型，test为动态数组名
+      test.push_back(1);
+      test.push_back(2);   //把1和2压入vector，因此，test[0]是1， test[1]是2
+      cout << test[0] << endl;
+      cout << test[1] << endl;
+      return 0;
+  }
+```
+>> 输出：  
+>> 1  
+>> 2
+
+### 基本操作
+1. 头文件：
