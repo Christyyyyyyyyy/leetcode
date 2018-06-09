@@ -75,7 +75,7 @@ cout << test[0] << endl;
 int main(){
     vector<char> test; //建立一个vector，int为元素数组的数据类型，test为动态数组名
     test.push_back('a');
-    test.push_back('b');//把1和2压入vector，因此，test[0]是1， test[1]是2
+    test.push_back('b');//把a和b压入vector，因此，test[0]是a， test[1]是b
     test.push_back('c');
     vector<char>::iterator k;
     for(k = test.begin(); k != test.end(); k++)
@@ -98,7 +98,18 @@ test.insert(test.begin() + i, a);  //在第i+1个元素前插入a；
 ```
 8. 删除任意位置元素：
 ```
-test.erase(test.begin()+2);  ／
-```／
+test.erase(test.begin()+2);  //删除第三个元素
 ```
+9. 删除区间：
 ```
+test.erase(test.begin()+i, test.begin()+j);  //删除区间[i,j-1]，注意区间从0开始！！！
+```
+10. 清空向量：
+```
+test.clear();
+```
+
+### 其他函数
+refer to: http://www.cplusplus.com/reference/vector/vector/assign/ 
+- vector::assign  
+> Assign vector content: assign new contents to the vector, replacing its current contents, and modifying its size accordingly.
