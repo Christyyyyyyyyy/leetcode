@@ -54,6 +54,10 @@ vector<int>test;
 ```
 test.push_back(a);
 ```
+4. 尾部删除元素：
+```
+test.pop_back();
+```
 4. 使用下标访问元素：（记住从下标是从0开始的）
 ```
 cout << test[0] << endl;
@@ -112,4 +116,10 @@ test.clear();
 ### 其他函数
 refer to: http://www.cplusplus.com/reference/vector/vector/assign/ 
 - vector::assign  
-> Assign vector content: assign new contents to the vector, replacing its current contents, and modifying its size accordingly.
+> Assign vector content: assign new contents to the vector, replacing its current contents, and modifying its size accordingly.  
+- vector::at  
+> Access element: returns a reference to the element at position n in the vector.  
+```
+for(unsigned i = 0; i < myvector.size(); i++)
+  myvector.at(i) = i;
+```
