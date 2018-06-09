@@ -92,3 +92,41 @@ vector<int> Solution::twoSum(vector<int>& data, int target){
     return index;
 }
 ```
+#### 解法2:双指针法  
+> v1:  
+```
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& data, int target) {
+        vector<int>cdata (data); //constructor of vector: cdata is a copy of data
+    vector<int>index; //放答案
+    partial_sort_copy(data.begin(),data.end(),cdata.begin(),cdata.end()); //该函数对部分元素进行排序，并把结果复制到另一个容器中
+    int left = 0, right = cdata.size() - 1; //双下标
+    int result = cdata.at(left) + cdata.at(right);
+    while(right > left){
+        if(result == target){
+            int pos = find(data.begin(), data.end(), cdata.at(left)) - data.begin(); //猜想：find函数返回的是类似于begin()的类指针，为了得到index就要减去最开始的指针
+            index.push_back(pos);
+            index.push_back(find(data.begin(),data.end(),cdata.at(right)) - data.begin());
+            left++;
+        }
+        else if(result > target){
+            right--; //向前移动下标
+        }
+        else{
+            left++; //向后移动上标
+        }
+        result = cdata.at(left) + cdata.at(right);
+    }
+
+    return index;
+    }
+};
+```  
+> 结果：  
+> WA  
+> 15 / 20 test cases passed.  
+> Input:[3,3] 6  
+> Output:[0,0]  
+> Expected: [0,1]  
+> 错误原因： 在将原数组
