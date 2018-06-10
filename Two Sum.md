@@ -131,4 +131,151 @@ public:
 > Expected: [0,1]  
 > 错误原因： 在将原数组排序并复制的时候，如果有两个值相同的元素，find函数只会取第一个。
 >> 怎么办呢。。。   
->>> 来试试vector&lt;struct&gt;好了。
+>>> 来试试vector&lt;struct&gt;好了。  
+  
+  > v2:  
+```
+struct Pair{
+    int num;
+    int ind;
+}mypair;
+
+static bool LessSort(Pair p1, Pair p2) {
+    return p1.num < p2.num;
+}
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>&data, int target) {
+    vector<Pair>cdata;
+    Pair mypair;
+    for(int i = 0; i < data.size(); i++){
+        mypair.num = data.at(i);
+        mypair.ind = i;
+        cdata.push_back(mypair);
+    }//把data传入cdata中，num存元素，ind存下标
+
+    vector<int>index; //放答案
+
+    sort(cdata.begin(),cdata.end(),LessSort);
+
+    int left = 0, right = cdata.size() - 1; //双下标
+    int result = cdata.at(left).num + cdata.at(right).num;
+    while(right > left){
+        if(result == target){
+            int pos = cdata.at(left).ind; //猜想：find函数返回的是类似于begin()的类指针，为了得到index就要减去最开始的指针
+            index.push_back(pos);
+            index.push_back(cdata.at(right).ind);
+            left++;
+        }
+        else if(result > target){
+            right--; //向前移动下标
+        }
+        else{
+            left++; //向后移动上标
+        }
+        result = cdata.at(left).num + cdata.at(right).num;
+    }
+    return index;
+    }
+};
+```  
+> 结果：  
+> AC  
+> Runntime:9ms, beats 92.29% of cpp submissions      
+>>注意，如果是在CLion上调试的话：  
+main.cpp:
+```
+#include<iostream>
+#include <vector>
+#include "Solution.h"
+
+using namespace std;
+
+
+int main(){
+    vector<int> input,output;
+    input.push_back(2);
+    input.push_back(2);
+    input.push_back(0);
+    input.push_back(0);
+    input.push_back(0);
+    input.push_back(0);
+
+    Solution sol1;
+    output = sol1.twoSum(input,4);
+
+    for(int k = 0; k < output.size(); k++){
+        cout << output[k] << endl;
+    }
+    
+    return 0;
+ }
+
+```  
+Solution.h:
+```
+#ifndef LIANSHOU_SOLUTION_H
+#define LIANSHOU_SOLUTION_H
+
+#include <vector>
+
+struct Pair{
+    int num;
+    int ind;
+};
+
+static bool LessSort(Pair p1, Pair p2) {
+    return p1.num < p2.num;
+}
+
+class Solution {
+public:
+    std::vector<int> twoSum(std::vector<int>& data, int target);
+
+};
+
+#endif 
+```  
+Solution.cpp:  
+```
+#include "Solution.h"
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> Solution::twoSum(vector<int>& data, int target){
+    vector<Pair>cdata;
+    Pair mypair;
+    for(int i = 0; i < data.size(); i++){
+        mypair.num = data.at(i);
+        mypair.ind = i;
+        cdata.push_back(mypair);
+    }//把data传入cdata中，num存元素，ind存下标
+
+    vector<int>index; //放答案
+
+    sort(cdata.begin(),cdata.end(),LessSort);
+
+//    partial_sort_copy(data.begin(),data.end(),cdata.begin(),cdata.end()); //该函数对部分元素进行排序，并把结果复制到另一个容器中
+    
+    int left = 0, right = cdata.size() - 1; //双下标
+    int result = cdata.at(left).num + cdata.at(right).num;
+    while(right > left){
+        if(result == target){
+            int pos = cdata.at(left).ind; //猜想：find函数返回的是类似于begin()的类指针，为了得到index就要减去最开始的指针
+            index.push_back(pos);
+            index.push_back(cdata.at(right).ind);
+            left++;
+        }
+        else if(result > target){
+            right--; //向前移动下标
+        }
+        else{
+            left++; //向后移动上标
+        }
+        result = cdata.at(left).num + cdata.at(right).num;
+    }
+    return index;
+}
+```
