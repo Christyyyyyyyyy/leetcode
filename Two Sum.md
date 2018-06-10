@@ -131,4 +131,4 @@ public:
 > Expected: [0,1]  
 > 错误原因： 在将原数组排序并复制的时候，如果有两个值相同的元素，find函数只会取第一个。
 >> 怎么办呢。。。   
->>> 来试试vector<struct>好了。
+>>> 来试试vector&lt;struct&gt;好了。
