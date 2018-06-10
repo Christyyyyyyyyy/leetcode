@@ -124,4 +124,6 @@ for(unsigned i = 0; i < myvector.size(); i++)
   myvector.at(i) = i;
 ``` 
 - vector sort函数
-https://www.cnblogs.com/cj695/p/3863142.html
+https://www.cnblogs.com/cj695/p/3863142.html  
+
+http://www.cnblogs.com/cj695/p/3863142.html#3795071
