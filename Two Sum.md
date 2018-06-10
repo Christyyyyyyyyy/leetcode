@@ -92,7 +92,9 @@ vector<int> Solution::twoSum(vector<int>& data, int target){
     return index;
 }
 ```
-#### 解法2:双指针法  
+#### 解法2:双指针法    
+在将元素排序的基础上，用left和right分别指向最小和最大的元素，用result存left和right指向的元素的和，与target进行比较，如果result>target
+,则说明和偏大了，所以要把和变小，因此right要向左移动一位，反之，left向右移动一位。如果有result=target的话，把left和rignt放进index里即可。
 > v1:  
 ```
 class Solution {
@@ -134,6 +136,11 @@ public:
 >>> 来试试vector&lt;struct&gt;好了。  
   
   > v2:  
+  v1点问题在于从元素值反推index的时候，如果有两个相同的元素，find函数就gg了。所以想着定义结构体，存着初始数组的元素and下标，这样元素和下标都是严格地一对一的，不怕检索出问题。  
+  
+  1. 定义了Pair结构体，（结构体的名字第一个字母一定要大写。。。），num放元素的值，ind放下标  
+  2. sort函数可用于vector，但是对于vector&lt;struct&gt;要使用sort函数，就要重构LessSort函数！
+  3. 利用vector&lt;struct&gt;的好处是，检索下标的时候不需要find函数，利用cdata.at(i).ind即可
 ```
 struct Pair{
     int num;
