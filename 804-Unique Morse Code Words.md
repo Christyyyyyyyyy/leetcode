@@ -50,5 +50,12 @@ public:
     return answer.size();
     }
 };
-```  
-> 从这次代码中
+```    
+结果：  
+AC  
+但是效率很低。11ms，beats 3.44% of cpp submissions  
+
+> 从这次代码中学到的／要提醒自己的：  
+1. vector<struct>或者vector<string>里如果要添加元素，在for循环里赋值是会出错的，所以应该把要赋的值放在尖括号里同类型的temp里，然后vector.push_back(temp)!  
+    2. 26字母的ascii码： a-z为 97-122； A-Z为 65-90.
+    3. Hash真是个好东西。。。
