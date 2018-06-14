@@ -26,16 +26,16 @@ Maps are typically implemented as binary search trees.
   ### Container properties
   1. Associative 
   Elements in associative containers are referenced by their **key** and not by their **absolute position** in the container.  
-  >> 你要访问 associative container里的元素，不能说像数组一样，通过下标或者绝对位置访问到，必须是key值。
+  > 你要访问 associative container里的元素，不能说像数组一样，通过下标或者绝对位置访问到，必须是key值。
   2. Ordered  
   The elements in the container follow a strict order at all times. All inserted elements are given a position in this order.
-  >> Map里的元素一定是有序的！！！有序的！！！有序的！！！
+  > Map里的元素一定是有序的！！！有序的！！！有序的！！！
   3. Map  
-  Each element associates a key to a mapped value: Keys are meant to identify the elements whose main content is the mapped value.  
+  > Each element associates a key to a mapped value: Keys are meant to identify the elements whose main content is the mapped value.  
   4. Unique keys  
-  No two elements in the container can have equivalent keys.  
+  > No two elements in the container can have equivalent keys.  
   5. Allocator-aware  
-  The container uses an allocator object to dynamically handle its storage need
+  > The container uses an allocator object to dynamically handle its storage need
   
 
 ### 基本操作
@@ -108,9 +108,9 @@ int main(){
 >> 3
 4. Element access相关：
 > 1. operator[]  
->> If k matches the key of an element in the container, the function returns a reference to its mapped value.  
->> If k does not match the key of any element in the container, the function **inserts** a new element with that key and returns a reference to its mapped value. Notice that this always **increases the container size by one**, even if no mapped value is assigned to the element( the element is construced using its default constructor).   
->> A similar member function, map::at, has the same behavior when an element with the key exists, but **throws an exception when it does not.**
+> If k matches the key of an element in the container, the function returns a reference to its mapped value.  
+> If k does not match the key of any element in the container, the function **inserts** a new element with that key and returns a reference to its mapped value. Notice that this always **increases the container size by one**, even if no mapped value is assigned to the element( the element is construced using its default constructor).   
+> A similar member function, map::at, has the same behavior when an element with the key exists, but **throws an exception when it does not.**
 ```
 #include <map>
 #include <iostream>
@@ -138,10 +138,38 @@ int main(){
 >> mymap['c'] is another element
 >> mymap now contains 3 elements.
 > 2. at 
+> Returns a reference to the mapped value of the element identified with key k.  
+> If k does not match the key of any element in the container, the function throws an out_of_range exception.
+```
+#include <map>
+#include <string>
+#include <iostream>
+using namespace std;
 
+int main(){
+    map<string,int> mymap = {
+            {"alpha",0},
+            {"beta",0},
+            {"gamma",0}
+    };
+
+    mymap.at("alpha") = 10;
+    mymap.at("beta") = 20;
+    mymap.at("gamma") = 30;
+
+    for( auto& x: mymap){
+        cout << x.first << ": " << x.second << endl;
+    }
+
+    return 0;
+}
 ```
-test.pop_back();
-```
+> 上面的代码还提供了一种遍历map的方法！
+>> 输出：
+>> alpha: 10  
+>> beta: 20  
+>> gamma: 30
+
 4. 使用下标访问元素：（记住从下标是从0开始的）
 ```
 cout << test[0] << endl;
