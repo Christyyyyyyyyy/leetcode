@@ -24,52 +24,121 @@ Maps are typically implemented as binary search trees.
 
   
   ### Container properties
-  1. Sequence  
-  Elements in sequence containers are ordered in a strict linear sequence. Individual elements are accessed by their position in this sequence.  
-  >> 元素在sequence container里是线性排序的。
-  >> 像数组一样，元素可通过其在序列里的顺序被访问到。
-  2. Dynamic array  
-  Allows direct access to any element in the sequence, even through pointer arithmetics, and provides relatively fast addition/removal of elements at the end of the sequence.  
-  >> 在end of the sequence，提供了增删操作。
-  >> 且尽管是动态的数组，元素的访问也可以通过pointer arithmetics。
-  3. Allocator-aware  
-  The container uses an allocator object to dynamically handle its storage needs.  
-  >> 容器使用分配器对象（allocator object）来动态处理其储存需求。
+  1. Associative 
+  Elements in associative containers are referenced by their **key** and not by their **absolute position** in the container.  
+  >> 你要访问 associative container里的元素，不能说像数组一样，通过下标或者绝对位置访问到，必须是key值。
+  2. Ordered  
+  The elements in the container follow a strict order at all times. All inserted elements are given a position in this order.
+  >> Map里的元素一定是有序的！！！有序的！！！有序的！！！
+  3. Map  
+  Each element associates a key to a mapped value: Keys are meant to identify the elements whose main content is the mapped value.  
+  4. Unique keys  
+  No two elements in the container can have equivalent keys.  
+  5. Allocator-aware  
+  The container uses an allocator object to dynamically handle its storage need
   
-  ### 使用方法
-```
-  #include<iostream>
-  #include<vector>
-
-  using namespace std;
-
-  int main(){
-      vector<int> test;   //建立一个vector，int为元素数组的数据类型，test为动态数组名
-      test.push_back(1);
-      test.push_back(2);   //把1和2压入vector，因此，test[0]是1， test[1]是2
-      cout << test[0] << endl;
-      cout << test[1] << endl;
-      return 0;
-  }
-```
->> 输出：  
->> 1  
->> 2
 
 ### 基本操作
-1. 头文件：  
+1. 初始化／声明：  
 ```
-#include<vector>
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main() {
+    map<char,int> first;
+
+    first['a'] = 10; //The mapped values can be accessed directly by the corresponding key using operator[]. 
+    first['b'] = 30;
+    first['c'] = 50;
+    first['d'] = 70;
+
+    map<char,int> second(first.begin(),first.end()); // 把已有的map的一段区间作为参数，初始化得到一个新的map
+
+    map<char,int> third(second); // 把已有的map作为参数，初始化得到一个新的map
+
+    return 0;
+}
 ```
-2. 创造vector对象：  
+2. =：  
 ```
-vector<int>test;
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> first;
+    map<char,int> second;
+
+    first['x'] = 8;
+    first['y'] = 16;
+    first['z'] = 32;
+
+    second = first; // second now contains 3 ints
+    first = map<char,int>(); // and first in now empty
+
+    cout << "Size of first: " << first.size() << endl;
+    cout << "Size of second:" << second.size() << endl;
+}
 ```
-3. 尾部插入数字：
+> 1. = 用于赋mapped value的值by mapname[key] = 。。。
+> 2. 两个同类型的map之间可以通过 = 直接copy，例如上面的 second = first；
+> 3. 要把一个已有的map清空，可以通过 = map<>(); 
+3. Capacity相关函数：
+> 1. empty函数:test whether container is empty
+> 2. size函数: Return container size
+> 3. max_size函数: Return maximum size.   
+Returns the maximum number of elements that the map container can hold.  
+This is the maximum potential size the container can reach due to known system or library implementation limitations, but the container is by no means guaranteed to be able to reach that size: it can still fail to allocate storage at any point before that size is reached.
 ```
-test.push_back(a);
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<int,int>mymap;
+    mymap[1] = 11;
+    mymap[2] = 22;
+    mymap[3] = 33;
+
+    cout << mymap.size() << endl;
+}
 ```
-4. 尾部删除元素：
+>> 输出：
+>> 3
+4. Element access相关：
+> 1. operator[]  
+>> If k matches the key of an element in the container, the function returns a reference to its mapped value.  
+>> If k does not match the key of any element in the container, the function **inserts** a new element with that key and returns a reference to its mapped value. Notice that this always **increases the container size by one**, even if no mapped value is assigned to the element( the element is construced using its default constructor).   
+>> A similar member function, map::at, has the same behavior when an element with the key exists, but **throws an exception when it does not.**
+```
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,string>mymap;
+
+    mymap['a'] = "an element";
+    mymap['b'] = "another element";
+    mymap['c'] = mymap['b']; // key=c的元素是新创造的，所以通过[]既可以access到，也可以创造有新的key的元素
+
+    cout << "mymap['a'] is " << mymap['a'] << endl;
+    cout << "mymap['b'] is " << mymap['b'] << endl;
+    cout << "mymap['c'] is " << mymap['c'] << endl;
+
+    cout << "mymap now contains " << mymap.size() << " elements." << endl;
+
+    return 0;
+}
+```
+>> 输出：
+>> mymap['a'] is an element
+>> mymap['b'] is another element
+>> mymap['c'] is another element
+>> mymap now contains 3 elements.
+> 2. at 
+
 ```
 test.pop_back();
 ```
