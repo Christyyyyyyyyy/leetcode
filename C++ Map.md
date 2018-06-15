@@ -335,11 +335,11 @@ int main(){
 > b => 22  
 
 5. Operations相关函数：  
->  find: Get iterator to element
->  count: Count elements with a specific key
->  lower_bound: Return iterator to lower bound
->  upper_bound: Return iterator to upper bound  
-> equal_range: Get range of equal elements  
+> **find**: Get iterator to element  
+> **count**: Count elements with a specific key  
+> **lower_bound**: Return iterator to lower bound  
+> **upper_bound**: Return iterator to upper bound    
+> **equal_range**: Get range of equal elements    
 > 1. **find**: Searches the container for an element with a key equivalent to k and returns **an iterator to it** if found, otherwise it returns an iterator to map::end. 
 > Two keys are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
 > **Another member function, map::count, can be used to just check whether a particular key exists.**
