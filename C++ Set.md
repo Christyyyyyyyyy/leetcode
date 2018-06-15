@@ -374,35 +374,30 @@ int main(){
 > 3. **lower_bound**: Return **iterator** to lower bound. Return an iterator pointing to the first element in the container which is not considered to go before val (i.e., either it is equivalent or goes after). 
 > 4. **upper_bound**: Return **iterator** to upper bound. Return an iterator pointing to the first element in the container which is considered to go after val.
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
-    map<char,int>::iterator itlow,itup;
+    set<int> myset;
+    set<int>::iterator itlow, itup;
 
-    mymap.insert(pair<char,int>('a',20));
-    mymap['b'] = 20;
-    mymap['c'] = 40;
-    mymap['d'] = 80;
-    mymap['e'] = 100;
+    for(int i = 1; i < 10; i++) myset.insert(i*10); // 10 20 30 40 50 60 70 80 90
 
-    itlow = mymap.lower_bound('b');
-    itup = mymap.upper_bound('d');
+    itlow = myset.lower_bound(30); // [ 指向30
+    itup = myset.upper_bound(60); // ( 指向70
 
-    mymap.erase(itlow,itup); //erases [itlow, itup)
-    for(map<char,int>::iterator it = mymap.begin(); it != mymap.end(); it++){
-        cout << it->first << " => " << it->second << endl;
-    }
+    myset.erase(itlow,itup); //[30,70)之间的erase掉  10 20 70 80 90
+
+    for(set<int>::iterator it = myset.begin(); it != myset.end(); it++)
+        cout << " " << *it;
 
     return 0;
 }
 ```  
 > 输出：   
-> a => 20
-> e => 100
+>  10 20 70 80 90
 
 
 ### 其他函数
-refer to: http://www.cplusplus.com/reference/map/map/
+refer to: http://www.cplusplus.com/reference/set/set/
