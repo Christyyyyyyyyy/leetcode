@@ -39,27 +39,34 @@ Sets are typically implemented as binary search trees.
 
 
 ### 基本操作
-1. 初始化／声明：  
+1. Constructing Sets：  
 ```
+#include <set>
 #include <iostream>
-#include <map>
 using namespace std;
 
-int main() {
-    map<char,int> first;
+int main(){
+    set<int> first; // empty set of ints
 
-    first['a'] = 10; //The mapped values can be accessed directly by the corresponding key using operator[]. 
-    first['b'] = 30;
-    first['c'] = 50;
-    first['d'] = 70;
+    int myints[] = {10,20,30,40,50};
+    set<int> second(myints,myints+4); //range
 
-    map<char,int> second(first.begin(),first.end()); // 把已有的map的一段区间作为参数，初始化得到一个新的map
+    set<int> third(second); // a copy of second
 
-    map<char,int> third(second); // 把已有的map作为参数，初始化得到一个新的map
+    set<int> fourth(second.begin(), second.end()); // iterator ctor.
 
+    set<int>::iterator it;
+    for(it = second.begin(); it != second.end(); it++){
+        cout << *it << endl;
+    }
     return 0;
 }
-```
+```  
+输出：  
+10  
+20  
+30
+40
 2. =：  
 ```
 #include <map>
