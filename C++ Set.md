@@ -64,33 +64,35 @@ int main(){
 ```  
 输出：  
 10  
-20  
-30
-40
-2. =：  
+20    
+30  
+40  
+2. operator =：  
+Assigns new contents to the container, replacing its current content.
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> first;
-    map<char,int> second;
+    int myints[] = { 12, 82, 37, 64, 15 };
+    set<int>first (myints, myints+5);   //set with 5 ints
+    // 所以上面提供了一种，从把数组元素提取到集合里的方法
 
-    first['x'] = 8;
-    first['y'] = 16;
-    first['z'] = 32;
+    set<int>second; //empty set
 
-    second = first; // second now contains 3 ints
-    first = map<char,int>(); // and first in now empty
+    second = first; // now second contains the 5 ints
+    first = set<int>(); // and first is empty
 
-    cout << "Size of first: " << first.size() << endl;
-    cout << "Size of second:" << second.size() << endl;
+    cout << "Size of first: " << int(first.size()) << endl;
+    cout << "Size of second: " << second.size() << endl;
+    
+    return 0;
 }
 ```
-> 1. = 用于赋mapped value的值by mapname[key] = 。。。
-> 2. 两个同类型的map之间可以通过 = 直接copy，例如上面的 second = first；
-> 3. 要把一个已有的map清空，可以通过 = map<>(); 
+> 1. 上面提供了一种从数组元素中创造集合的做法：set<int>first(myints,myints+5);
+> 2. 两个同类型的set之间可以通过 = 直接copy，例如上面的 second = first；
+> 3. 要把一个已有的set清空，可以通过 = set<int>(); 注意尖括号里要写上set的类型
 3. Capacity相关函数：
 > 1. empty函数:test whether container is empty
 > 2. size函数: Return container size
