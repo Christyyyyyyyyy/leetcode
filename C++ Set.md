@@ -101,10 +101,29 @@ int main(){
 > 3. max_size函数: Return maximum size.   
 >> 1. empty函数：Test whether container is empty. Returns whether the set container is empty(i.e., whether its size is 0). This function dose not modify the container in any way!
   ```
-  include 
+  #include <set>
+  #include <iostream>
+  using namespace std;
+
+  int main(){
+     set<int> myset;
+
+      myset.insert(20);
+      myset.insert(30);
+      myset.insert(10);
+
+      cout << "myset contains: ";
+      while(!myset.empty()){
+         cout << *myset.begin() << ' ' ;
+         myset.erase(myset.begin());
+     }
+
+      return 0;
+  }
   ```
 >> 输出：
->> 3
+>> myset contains: 10 20 30
+
 4. Element access相关：
 > 1. operator[]  
 > If k matches the key of an element in the container, the function returns a reference to its mapped value.  
