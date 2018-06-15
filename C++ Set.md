@@ -99,7 +99,8 @@ int main(){
 > 1. empty函数:test whether container is empty
 > 2. size函数: Return container size
 > 3. max_size函数: Return maximum size.   
->> 1. empty函数：Test whether container is empty. Returns whether the set container is empty(i.e., whether its size is 0). This function dose not modify the container in any way!
+>> 1. empty函数：Test whether container is empty. Returns whether the set container is empty(i.e., whether its size is 0). This function dose not modify the container in any way!  
+  
   ```
   #include <set>
   #include <iostream>
@@ -122,318 +123,256 @@ int main(){
   }
   ```
 >> 输出：
->> myset contains: 10 20 30
+>> myset contains: 10 20 30  
+>> 所以上面用了 while(!myset.empty()){} 来实现循环，然后{}里 通过 *myset.begin() 来访问集合里的第一个元素，然后通过 myset.erase(myset.begin())来踢掉原有的第一个元素。 
+  >>2. size函数：
 
-4. Element access相关：
-> 1. operator[]  
-> If k matches the key of an element in the container, the function returns a reference to its mapped value.  
-> If k does not match the key of any element in the container, the function **inserts** a new element with that key and returns a reference to its mapped value. Notice that this always **increases the container size by one**, even if no mapped value is assigned to the element( the element is construced using its default constructor).   
-> A similar member function, map::at, has the same behavior when an element with the key exists, but **throws an exception when it does not.**
-```
-#include <map>
-#include <iostream>
-using namespace std;
+  ```
+  #include <set>
+  #include <iostream>
+  using namespace std;
 
-int main(){
-    map<char,string>mymap;
+  int main(){
+      set<int> myints;
+      cout << "0. size: " << myints.size() << endl;
 
-    mymap['a'] = "an element";
-    mymap['b'] = "another element";
-    mymap['c'] = mymap['b']; // key=c的元素是新创造的，所以通过[]既可以access到，也可以创造有新的key的元素
+     for(int i = 0; i < 10; ++i)
+          myints.insert(i);
+      cout << "1. size: " << myints. size() << endl;
 
-    cout << "mymap['a'] is " << mymap['a'] << endl;
-    cout << "mymap['b'] is " << mymap['b'] << endl;
-    cout << "mymap['c'] is " << mymap['c'] << endl;
+      myints.insert(100);
+      cout << "2. size: " << myints.size() << endl;
 
-    cout << "mymap now contains " << mymap.size() << " elements." << endl;
+      myints.erase(5);
+      cout << "3. size: " << myints.size() << endl;
 
-    return 0;
-}
-```
->> 输出：
->> mymap['a'] is an element
->> mymap['b'] is another element
->> mymap['c'] is another element
->> mymap now contains 3 elements.
-> 2. at 
-> Returns a reference to the mapped value of the element identified with key k.  
-> If k does not match the key of any element in the container, the function throws an out_of_range exception.
-```
-#include <map>
-#include <string>
-#include <iostream>
-using namespace std;
+      return 0;
+  }
 
-int main(){
-    map<string,int> mymap = {
-            {"alpha",0},
-            {"beta",0},
-            {"gamma",0}
-    };
-
-    mymap.at("alpha") = 10;
-    mymap.at("beta") = 20;
-    mymap.at("gamma") = 30;
-
-    for( auto& x: mymap){
-        cout << x.first << ": " << x.second << endl;
-    }
-
-    return 0;
-}
-```
-> 上面的代码还提供了一种遍历map的方法！
->> 输出：
->> alpha: 10  
->> beta: 20  
->> gamma: 30
-
+  ```  
+  输出：  
+  0. size: 0  
+  1. size: 10    
+  2. size: 11    
+  3. size: 10  
+  >> 3. max_size:  
+  Returns the maximum number of elements that the set container can hold.  
+  This is the maximum potential size the contaner can reach due to known system or library implementation limitations, but the container is by no means guaranteed to be able to reach that size: it can still fail to allocate storage at any point before that size is reached.  
+  
 4. Modifiers相关函数：
 > insert: Insert elements  
 > erase: Erase elements  
 > swap: Swap content  
 > clear: Clear content  
 > 1. **insert**: Extends the container by inserting new **elements**, effectively increasing the container **size** by the number of elements inserted.  
-> Because element keys in a map are unique, the insertion operation checks whether each inserted element has a key equivalent to the one of an element already in the container, and if so, the element is not inserted, returning an iterator to this existing element (if the function returns a value).
-> **An alternative way to insert elements in a map is by using member function map::operator[].**
+> Because elements in a set are unique, the insertion operation checks whether each inserted element is equivalent to an element already in the container, and if so, the element is not inserted, returning an iterator to this existing element (if the function returns a value).
+> Internally, set containers keep all their elements sorted following the criterion specified by its comparison object. **The elements are always inserted in its repective position following this ordering.**  
+>> 1) insert single element  
+>> 2) iterator insert  
+>> 3) range insert
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
-    mymap.insert(pair<char,int>('a',100));
-    mymap.insert(pair<char,int>('z',200));
+    set<int> myset;
+    set<int>::iterator it;
 
-   for(auto& x: mymap){
-        cout << x.first << ": " << x.second << endl;
+    for(int i = 1; i <= 5; i++){ // insert single elements
+        myset.insert(i*10); //set: 10 20 30 40 50
+    }
+    int myints[] = {5, 10, 15};
+    myset.insert(myints, myints+3); // insert with range
+
+    it = myset.begin();
+    myset.insert(it,11); // insert with iterator
+
+    for(it = myset.begin(); it != myset.end(); it++){
+        cout << *it << " ";
     }
     return 0;
 }
 ```  
 > 输出：   
-> a: 100    
-> z: 200
-> 2. **erase**: Removes from the map container either a single element or a range of elements([first,last])  
+> 5 10 11 15 20 30 40 50     
+> 2. **erase**: Removes from the set container either a single element or a range of elements([first,last])  
 > This effectively reduces the container size by the number of elements removed, which are destroyed.  
 >> 1) erase by iterator  
->> 2) erase by key  
+>> 2) erase by element  
 >> 3) erase by range
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
-    map<char,int>::iterator it;
+    set<int> myset;
+    set<int>::iterator it;
 
-    //insert some values
-    mymap['a'] = 10;
-    mymap['b'] = 20;
-    mymap['c'] = 30;
-    mymap.insert(pair<char,int>('e',50));
-    mymap.insert(pair<char,int>('f',60));
-    mymap.insert(pair<char,int>('d',40));
+    //insert some values:
+    for(int i = 1; i < 10; i++) myset.insert(i*10); // 10 20 30 40 50 60 70 80 90
 
-    for(auto& x: mymap){
-        cout << x.first << " : " << x.second << endl;
-    }
+    it = myset.begin();
+    ++it;
 
-    //erasing by iterator
-    it = mymap.find('b');
-    mymap.erase(it);
+    myset.erase(it); // erase by iterator
+    myset.erase(40); // erase by elements
 
-    //erasing by key
-    mymap.erase('c');
+    it = myset.find(60);
+    myset.erase(it, myset.end()); //erase by range
 
-    //erasing by range
-    it = mymap.find('e');
-    mymap.erase(it,mymap.end());
+    cout << "myset contains: " ;
+    for(it = myset.begin(); it != myset.end(); ++it)
+        cout << ' ' << *it;
 
-    //利用iterator 遍历 map
-    for(it = mymap.begin(); it != mymap.end(); ++it){
-        cout << it->first << " => " << it->second << endl;
-    }
     return 0;
 }
 ```  
 > 输出：  
-> a : 10  
-> b : 20  
-> c : 30  
-> d : 40  
-> e : 50  
-> f : 60  
-> a => 10  
-> d => 40  
+> myset contains:  10 30 50  
+> erase by iterator的话，要注意iterator是可以进行算术运算的  
+> erase by range的话，和insert by range里用了数组（名）不同，这里range是利用iterator来辅助实现的。
 
-> 3. **swap**: Exchanges the content of the container by the content of x, which is another map of the same type. Sizes may differ.
-
+> 3. **swap**: Exchanges the content of the container by the content of x, which is another set of the same type. Sizes may differ.  
 > After the call to this member function, the elements in this container are those which were in x before the call, and the elements of x are those which were in this. All iterators, references and pointers remain valid for the swapped objects.
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> foo,bar;
+    int myints[] = { 12, 75, 10, 32, 20, 25 };
+    set<int> first(myints,myints+3); // 10,12,75
+    set<int> second(myints+3,myints+5); // 20,32 !注意下边是从0开始，而且是左闭右开区间
 
-    foo['x'] = 100;
-    foo['y'] = 200;
+    first.swap(second);
 
-    bar.insert(pair<char,int>('a',11));
-    bar.insert(pair<char,int>('b',22));
-    bar.insert(pair<char,int>('c',33));
+    cout << "first contians: ";
+    for(set<int>::iterator it = first.begin(); it != first.end(); it++)
+        cout << ' ' << *it;
+    cout << endl;
 
-    foo.swap(bar);
-
-    cout << "foo contains: " << endl;
-    for(auto& x: foo){
-        cout << x.first << " => " << x.second << endl;
-    }
-    cout << "bar contains: " << endl;
-    map<char,int>::iterator it;
-    for(it = bar.begin(); it != bar.end(); it++){
-        cout << it->first << " => " << it->second << endl;
-    }
+    cout << "second contains: ";
+    for(set<int>::iterator it = second.begin(); it != second.end(); it++)
+        cout << ' ' << *it;
     
     return 0;
 }
 ```  
 > 输出：
-> foo contains: 
-> a => 11
-> b => 22
-> c => 33
-> bar contains: 
-> x => 100
-> y => 200  
+> first contians:  20 32
+> second contains:  10 12 75  
 
-> 4. **clear**: Removes all elements from the map container (which are destroyed), leaving the container with a size of 0.
+> 4. **clear**: Removes all elements from the container (which are destroyed), leaving the container with a size of 0.
 
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
+    set<int> myset;
 
-    mymap['x'] = 100;
-    mymap['y'] = 200;
-    mymap.insert(pair<char,int>('z',300));
+    myset.insert(100);
+    myset.insert(200);
+    myset.insert(300);
 
-    cout << "mymap contains: " << endl;
-    map<char,int>::iterator it;
-    for(it = mymap.begin(); it != mymap.end(); it++){
-        cout << it->first << " => " << it->second << endl;
-    }
+    cout << "myset contains: ";
+    for(set<int>::iterator it = myset.begin(); it != myset.end(); it++)
+        cout << ' ' << *it;
+    cout << endl;
 
-    mymap.clear();
-    cout << "size: " << mymap.size() << endl;
+    myset.clear();
+    cout << "myset's size after clear: " << myset.size() << endl;
 
-    mymap['a'] = 11;
-    mymap.insert(pair<char,int>('b',22));
+    myset.insert(1101);
+    myset.insert(1102);
 
-    for(auto&x:mymap){
-        cout << x.first << " => " << x.second << endl;
-    }
+    cout << "myset now contains: ";
+    for(set<int>::iterator it = myset.begin(); it != myset.end(); it++)
+        cout << " " << *it;
+
     return 0;
 }
 ```  
 > 输出：  
-> mymap contains:   
-> x => 100  
-> y => 200  
-> z => 300  
-> size: 0  
-> a => 11  
-> b => 22  
+> myset contains:  100 200 300 
+> myset's size after clear: 0
+> myset now contains:  1101 1102  
+  
 
 5. Operations相关函数：  
 > **find**: Get iterator to element  
-> **count**: Count elements with a specific key  
+> **count**: Count elements with a specific value  
 > **lower_bound**: Return iterator to lower bound  
 > **upper_bound**: Return iterator to upper bound    
 > **equal_range**: Get range of equal elements    
-> 1. **find**: Searches the container for an element with a key equivalent to k and returns **an iterator to it** if found, otherwise it returns an iterator to map::end. 
-> Two keys are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
-> **Another member function, map::count, can be used to just check whether a particular key exists.**
+> 1. **find**: Searches the container for an element equivalent to val and returns **an iterator to it** if found, otherwise it returns an iterator to map::end. 
+> Two elements of a set are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
-    map<char,int>::iterator it;
+    set<int> myset;
+    set<int>::iterator it;
 
-    mymap['a'] = 50;
-    mymap['b'] = 100;
-    mymap.insert(pair<char,int>('c',150));
-    mymap.insert(pair<char,int>('d',200));
+    for(int i = 1; i< 6; i++)  myset.insert(i*10); //set: 10 20 30 40 50
 
-    it = mymap.find('b');
-    if(it != mymap.end()){
-        mymap.erase(it);
-    }
-    it = mymap.find('z');
-    if(it == mymap.end()){
-        cout << "can not find 'z'." << endl;
-    }
+    it = myset.find(20); // find函数返回的是iterator
+    myset.erase(it); // erase by iterator
+    myset.erase(myset.find(40));
 
-    for(it = mymap.begin(); it != mymap.end(); it++){
-        cout << it->first << " : " << it->second << endl;
-    }
+    cout << "myset contains: ";
+    for(it = myset.begin(); it != myset.end(); it++)
+        cout << " " << *it;
 
     return 0;
 }
 ```  
 > 输出：   
-> can not find 'z'.   
-> a : 50  
-> c : 150  
-> d : 200
+> myset contains:  10 30 50
 
-> 2. **count**: Count elements with a specific key. Searches the container for elements with a key equivalent to k and returns **the number of matches**. 
-> Because all elements in a map container are unique, the function can only return 1(if the element is found) or zero(otherwise).
-> Two keys are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
+> 2. **count**: Count elements with a specific value. Searches the container for elements equivalent to val and returns **the number of matches**. 
+> Because all elements in a set are unique, the function can only return 1(if the element is found) or zero(otherwise).
+> Two elements of a set are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
 ```
-#include <map>
+#include <set>
 #include <iostream>
 using namespace std;
 
 int main(){
-    map<char,int> mymap;
-    char c;
+    set<int> myset;
 
-    mymap.insert(pair<char,int>('a',101));
-    mymap['c'] = 202;
-    mymap['f'] = 303;
+    for(int i = 1; i < 5; i++)  myset.insert(i*3); //set: 3 6 9 12
 
-    for(c = 'a'; c < 'h'; c++){
-        cout << c;
-        if(mymap.count(c) > 0)
-            cout << " is an element of mymap." << endl;
+    for(int i = 0; i < 10; i++){
+        cout << i;
+        if(myset.count(i) != 0)
+            cout << " is an element of myset. \n";
         else
-            cout << " is not an element of mymap." << endl;
+            cout << " is not an element of myset. \n";
     }
+    
     return 0;
 }
 ```  
 > 输出：   
-> a is an element of mymap.  
-> b is not an element of mymap.  
-> c is an element of mymap.  
-> d is not an element of mymap.  
-> e is not an element of mymap.  
-> f is an element of mymap.  
-> g is not an element of mymap.
+> 0 is not an element of myset.   
+> 1 is not an element of myset.   
+> 2 is not an element of myset.   
+> 3 is an element of myset.   
+> 4 is not an element of myset.   
+> 5 is not an element of myset.   
+> 6 is an element of myset.   
+> 7 is not an element of myset.   
+> 8 is not an element of myset.   
+>9 is an element of myset. 
 
-> 3. **lower_bound**: Return **iterator** to lower bound. Return an iterator pointing to the first element in the container whose key is not considered to go before k (i.e., either it is equivalent or goes after). 
-> 4. **upper_bound**: Return **iterator** to upper bound. Return an iterator pointing to the first element in the container whose key is considered to go after k.
+> 3. **lower_bound**: Return **iterator** to lower bound. Return an iterator pointing to the first element in the container which is not considered to go before val (i.e., either it is equivalent or goes after). 
+> 4. **upper_bound**: Return **iterator** to upper bound. Return an iterator pointing to the first element in the container which is considered to go after val.
 ```
 #include <map>
 #include <iostream>
