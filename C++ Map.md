@@ -291,7 +291,8 @@ int main(){
 > c => 33
 > bar contains: 
 > x => 100
-> y => 200
+> y => 200  
+
 > 4. **clear**: Removes all elements from the map container (which are destroyed), leaving the container with a size of 0.
 
 ```
