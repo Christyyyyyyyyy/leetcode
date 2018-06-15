@@ -249,7 +249,8 @@ int main(){
 > e : 50  
 > f : 60  
 > a => 10  
-> d => 40
+> d => 40  
+
 > 3. **swap**: Exchanges the content of the container by the content of x, which is another map of the same type. Sizes may differ.
 
 > After the call to this member function, the elements in this container are those which were in x before the call, and the elements of x are those which were in this. All iterators, references and pointers remain valid for the swapped objects.
