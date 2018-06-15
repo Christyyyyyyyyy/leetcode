@@ -55,6 +55,42 @@ public:
 AC  
 但是效率很低。11ms，beats 3.44% of cpp submissions  
 
+  
+  #### 我的进阶解法: 利用vector，map和set  
+> leetcode上提交的代码：  
+```
+class Solution {
+public:
+    int uniqueMorseRepresentations(vector<string>& words) {
+        vector<string> dots = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+
+    map<char,string> letterToMorse;
+    int k = 0;
+    for(int i = 'a'; i <= 'z'; i++){
+        letterToMorse[char(i)] = dots[k];
+        k++;
+    }
+
+    set<string> myset;
+    for(int i = 0; i < words.size(); i++){
+        string word = words[i];
+        string temp = " ";
+        for(int j = 0; j < word.length(); j++){
+            temp.insert(temp.length(),letterToMorse[char(word[j])]);
+        }
+        myset.insert(temp);
+    }
+    return myset.size() ;
+    
+    }
+};
+```    
+结果：  
+AC  
+比上个方法有进步。 7ms，beats 46.65% of cpp submissions.
+> 利用了map的键-值对特性，不需要自己构建struct  
+> 利用了set的元素就是内容值本身，且元素unique的特性，轻易解决了差重的问题。
+
 > 从这次代码中学到的／要提醒自己的：  
 > 1. vector<struct>或者vector<string>里如果要添加元素，在for循环里赋值是会出错的，所以应该把要赋的值放在尖括号里同类型的temp里，然后vector.push_back(temp)!  
    >  2. 26字母的ascii码： a-z为 97-122； A-Z为 65-90.
