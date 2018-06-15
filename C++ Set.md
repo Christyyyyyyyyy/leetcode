@@ -99,22 +99,10 @@ int main(){
 > 1. empty函数:test whether container is empty
 > 2. size函数: Return container size
 > 3. max_size函数: Return maximum size.   
-Returns the maximum number of elements that the map container can hold.  
-This is the maximum potential size the container can reach due to known system or library implementation limitations, but the container is by no means guaranteed to be able to reach that size: it can still fail to allocate storage at any point before that size is reached.
-```
-#include <map>
-#include <iostream>
-using namespace std;
-
-int main(){
-    map<int,int>mymap;
-    mymap[1] = 11;
-    mymap[2] = 22;
-    mymap[3] = 33;
-
-    cout << mymap.size() << endl;
-}
-```
+>> 1. empty函数：Test whether container is empty. Returns whether the set container is empty(i.e., whether its size is 0). This function dose not modify the container in any way!
+  ```
+  include 
+  ```
 >> 输出：
 >> 3
 4. Element access相关：
