@@ -170,72 +170,280 @@ int main(){
 >> beta: 20  
 >> gamma: 30
 
-4. 使用下标访问元素：（记住从下标是从0开始的）
+4. Modifiers相关函数：
+> insert: Insert elements  
+> erase: Erase elements  
+> swap: Swap content  
+> clear: Clear content  
+> 1. **insert**: Extends the container by inserting new **elements**, effectively increasing the container **size** by the number of elements inserted.  
+> Because element keys in a map are unique, the insertion operation checks whether each inserted element has a key equivalent to the one of an element already in the container, and if so, the element is not inserted, returning an iterator to this existing element (if the function returns a value).
+> **An alternative way to insert elements in a map is by using member function map::operator[].**
 ```
-cout << test[0] << endl;
-```
-5. 使用迭代器访问元素：
-```
-    vector<int>::iterator k;
-    for(k = test.begin(); k != test.end(); k++)
-        cout << *k << endl;
-```
->> 输出：  
+#include <map>
+#include <iostream>
+using namespace std;
 
->> 1  
->> 2  
->> 3  
->>> 所以k本质上是一个指针。  
-要注意，迭代器<>里的数据类型不是一直是int的！应该根据与vector的数据类型一致：  
-```
 int main(){
-    vector<char> test; //建立一个vector，int为元素数组的数据类型，test为动态数组名
-    test.push_back('a');
-    test.push_back('b');//把a和b压入vector，因此，test[0]是a， test[1]是b
-    test.push_back('c');
-    vector<char>::iterator k;
-    for(k = test.begin(); k != test.end(); k++)
-        cout << *k << endl;
-    return 0;
- }
-```
->> 输出：  
+    map<char,int> mymap;
+    mymap.insert(pair<char,int>('a',100));
+    mymap.insert(pair<char,int>('z',200));
 
->> a  
->> b  
->> c 
-6. 向量大小：
+   for(auto& x: mymap){
+        cout << x.first << ": " << x.second << endl;
+    }
+    return 0;
+}
+```  
+> 输出：   
+> a: 100    
+> z: 200
+> 2. **erase**: Removes from the map container either a single element or a range of elements([first,last])  
+> This effectively reduces the container size by the number of elements removed, which are destroyed.  
+>> 1) erase by iterator  
+>> 2) erase by key  
+>> 3) erase by range
 ```
-test.size();
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> mymap;
+    map<char,int>::iterator it;
+
+    //insert some values
+    mymap['a'] = 10;
+    mymap['b'] = 20;
+    mymap['c'] = 30;
+    mymap.insert(pair<char,int>('e',50));
+    mymap.insert(pair<char,int>('f',60));
+    mymap.insert(pair<char,int>('d',40));
+
+    for(auto& x: mymap){
+        cout << x.first << " : " << x.second << endl;
+    }
+
+    //erasing by iterator
+    it = mymap.find('b');
+    mymap.erase(it);
+
+    //erasing by key
+    mymap.erase('c');
+
+    //erasing by range
+    it = mymap.find('e');
+    mymap.erase(it,mymap.end());
+
+    //利用iterator 遍历 map
+    for(it = mymap.begin(); it != mymap.end(); ++it){
+        cout << it->first << " => " << it->second << endl;
+    }
+    return 0;
+}
+```  
+> 输出：  
+> a : 10  
+> b : 20  
+> c : 30  
+> d : 40  
+> e : 50  
+> f : 60  
+> a => 10  
+> d => 40
+> 3. **swap**: Exchanges the content of the container by the content of x, which is another map of the same type. Sizes may differ.
+
+> After the call to this member function, the elements in this container are those which were in x before the call, and the elements of x are those which were in this. All iterators, references and pointers remain valid for the swapped objects.
 ```
-7. 任意位置插入元素：
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> foo,bar;
+
+    foo['x'] = 100;
+    foo['y'] = 200;
+
+    bar.insert(pair<char,int>('a',11));
+    bar.insert(pair<char,int>('b',22));
+    bar.insert(pair<char,int>('c',33));
+
+    foo.swap(bar);
+
+    cout << "foo contains: " << endl;
+    for(auto& x: foo){
+        cout << x.first << " => " << x.second << endl;
+    }
+    cout << "bar contains: " << endl;
+    map<char,int>::iterator it;
+    for(it = bar.begin(); it != bar.end(); it++){
+        cout << it->first << " => " << it->second << endl;
+    }
+    
+    return 0;
+}
+```  
+> 输出：
+> foo contains: 
+> a => 11
+> b => 22
+> c => 33
+> bar contains: 
+> x => 100
+> y => 200
+> 4. **clear**: Removes all elements from the map container (which are destroyed), leaving the container with a size of 0.
+
 ```
-test.insert(test.begin() + i, a);  //在第i+1个元素前插入a；
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> mymap;
+
+    mymap['x'] = 100;
+    mymap['y'] = 200;
+    mymap.insert(pair<char,int>('z',300));
+
+    cout << "mymap contains: " << endl;
+    map<char,int>::iterator it;
+    for(it = mymap.begin(); it != mymap.end(); it++){
+        cout << it->first << " => " << it->second << endl;
+    }
+
+    mymap.clear();
+    cout << "size: " << mymap.size() << endl;
+
+    mymap['a'] = 11;
+    mymap.insert(pair<char,int>('b',22));
+
+    for(auto&x:mymap){
+        cout << x.first << " => " << x.second << endl;
+    }
+    return 0;
+}
+```  
+> 输出：  
+> mymap contains:   
+> x => 100  
+> y => 200  
+> z => 300  
+> size: 0  
+> a => 11  
+> b => 22  
+
+5. Operations相关函数：  
+>  find: Get iterator to element
+>  count: Count elements with a specific key
+>  lower_bound: Return iterator to lower bound
+>  upper_bound: Return iterator to upper bound  
+> equal_range: Get range of equal elements  
+> 1. **find**: Searches the container for an element with a key equivalent to k and returns **an iterator to it** if found, otherwise it returns an iterator to map::end. 
+> Two keys are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
+> **Another member function, map::count, can be used to just check whether a particular key exists.**
 ```
-8. 删除任意位置元素：
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> mymap;
+    map<char,int>::iterator it;
+
+    mymap['a'] = 50;
+    mymap['b'] = 100;
+    mymap.insert(pair<char,int>('c',150));
+    mymap.insert(pair<char,int>('d',200));
+
+    it = mymap.find('b');
+    if(it != mymap.end()){
+        mymap.erase(it);
+    }
+    it = mymap.find('z');
+    if(it == mymap.end()){
+        cout << "can not find 'z'." << endl;
+    }
+
+    for(it = mymap.begin(); it != mymap.end(); it++){
+        cout << it->first << " : " << it->second << endl;
+    }
+
+    return 0;
+}
+```  
+> 输出：   
+> can not find 'z'.   
+> a : 50  
+> c : 150  
+> d : 200
+
+> 2. **count**: Count elements with a specific key. Searches the container for elements with a key equivalent to k and returns **the number of matches**. 
+> Because all elements in a map container are unique, the function can only return 1(if the element is found) or zero(otherwise).
+> Two keys are considered equivalent if the container's comparison object returns false reflexively (i.e., no matter the order in which the elements are passed as arguments).
 ```
-test.erase(test.begin()+2);  //删除第三个元素
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> mymap;
+    char c;
+
+    mymap.insert(pair<char,int>('a',101));
+    mymap['c'] = 202;
+    mymap['f'] = 303;
+
+    for(c = 'a'; c < 'h'; c++){
+        cout << c;
+        if(mymap.count(c) > 0)
+            cout << " is an element of mymap." << endl;
+        else
+            cout << " is not an element of mymap." << endl;
+    }
+    return 0;
+}
+```  
+> 输出：   
+> a is an element of mymap.  
+> b is not an element of mymap.  
+> c is an element of mymap.  
+> d is not an element of mymap.  
+> e is not an element of mymap.  
+> f is an element of mymap.  
+> g is not an element of mymap.
+
+> 3. **lower_bound**: Return **iterator** to lower bound. Return an iterator pointing to the first element in the container whose key is not considered to go before k (i.e., either it is equivalent or goes after). 
+> 4. **upper_bound**: Return **iterator** to upper bound. Return an iterator pointing to the first element in the container whose key is considered to go after k.
 ```
-9. 删除区间：
-```
-test.erase(test.begin()+i, test.begin()+j);  //删除区间[i,j-1]，注意区间从0开始！！！
-```
-10. 清空向量：
-```
-test.clear();
-```
+#include <map>
+#include <iostream>
+using namespace std;
+
+int main(){
+    map<char,int> mymap;
+    map<char,int>::iterator itlow,itup;
+
+    mymap.insert(pair<char,int>('a',20));
+    mymap['b'] = 20;
+    mymap['c'] = 40;
+    mymap['d'] = 80;
+    mymap['e'] = 100;
+
+    itlow = mymap.lower_bound('b');
+    itup = mymap.upper_bound('d');
+
+    mymap.erase(itlow,itup); //erases [itlow, itup)
+    for(map<char,int>::iterator it = mymap.begin(); it != mymap.end(); it++){
+        cout << it->first << " => " << it->second << endl;
+    }
+
+    return 0;
+}
+```  
+> 输出：   
+> a => 20
+> e => 100
+
 
 ### 其他函数
-refer to: http://www.cplusplus.com/reference/vector/vector/assign/ 
-- vector::assign  
-> Assign vector content: assign new contents to the vector, replacing its current contents, and modifying its size accordingly.  
-- vector::at  
-> Access element: returns a reference to the element at position n in the vector.  
-```
-for(unsigned i = 0; i < myvector.size(); i++)
-  myvector.at(i) = i;
-``` 
-- vector sort函数
-https://www.cnblogs.com/cj695/p/3863142.html  
-
-http://www.cnblogs.com/cj695/p/3863142.html#3795071
+refer to: http://www.cplusplus.com/reference/map/map/
